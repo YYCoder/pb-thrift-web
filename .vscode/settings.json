@@ -1,0 +1,92 @@
+{
+    // 对指定文件以指定类型语言解析
+    "files.associations": {
+        ".code-workspace": "jsonc",
+        ".babelrc": "json",
+        ".eslintrc": "jsonc",
+        ".eslintrc*.json": "jsonc",
+        ".stylelintrc": "jsonc",
+        "stylelintrc": "jsonc",
+        ".htmlhintrc": "jsonc",
+        "htmlhintrc": "jsonc",
+        "Procfile*": "shellscript",
+        "README": "markdown"
+    },
+    // 是否在搜索是使用 .gitignore 或 .ignore 文件忽略一些文件
+    "search.useIgnoreFiles": true,
+    // 搜索时过滤的目录
+    "search.exclude": {
+        "**/build": true,
+        "**/output": true,
+        "**/dist": true,
+        "**/yarn.lock": true,
+        "**/package-lock.json": true,
+        "**/*.log": true,
+        "**/*.pid": true,
+        "**/.git": true,
+        "**/node_modules": true,
+        "**/bower_components": true
+    },
+    // 默认行尾符
+    "files.eol": "\n",
+    // 编辑器中的标尺
+    "editor.rulers": [
+        80,
+        120
+    ],
+    // 启用内置 json 格式化程序
+    "json.format.enable": true,
+    // less/css/sass 内置校验，具体校验项参考 https://code.visualstudio.com/docs/languages/css#_customizing-css-scss-and-less-settings
+    "less.validate": false,
+    "css.validate": false,
+    // js 内置校验，具体校验项参考 https://code.visualstudio.com/docs/languages/javascript
+    "javascript.validate.enable": true,
+    // ts 内置校验，具体校验项参考 https://code.visualstudio.com/docs/languages/typescript
+    "typescript.validate.enable": true,
+    // ts class 展示标识符被引用次数，参考 https://code.visualstudio.com/docs/languages/typescript#_references-codelens
+    "typescript.referencesCodeLens.enabled": false, // 感觉没啥用😓
+    // ts interface 展示被 implement 次数，参考 https://code.visualstudio.com/docs/languages/typescript#_implementations-codelens
+    "typescript.implementationsCodeLens.enabled": true,
+    // ts 文件移动自动更新所有引用的地方，参考 https://code.visualstudio.com/docs/languages/typescript#_update-imports-on-file-move
+    "typescript.updateImportsOnFileMove.enabled": "always", // 默认就是 always
+    // 保存时的行为
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": true, // 针对 eslint 的结果自动修复，eslint 不会自动修复的
+        "source.organizeImports": true, // 对 ts 自动格式化 import，删除无用的 import、合并相同模块的 import
+    },
+    // 内置特定语言配置
+    "[json]": {
+        "editor.tabSize": 4, // 会优先使用 .editorconfig 的配置
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true
+    },
+    "[css]": {
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true
+    },
+    "[jsonc]": {
+        "editor.tabSize": 4, // 会优先使用 .editorconfig 的配置
+        "editor.formatOnType": true,
+        "editor.formatOnPaste": true,
+        "editor.formatOnSave": true
+    },
+    // eslint 相关
+    "eslint.alwaysShowStatus": true,
+    "eslint.nodePath": "./node_modules",
+    "eslint.lintTask.enable": true,
+    "eslint.probe": [
+        "javascript",
+        "javascriptreact",
+        "typescript",
+        "typescriptreact",
+        "vue",
+    ],
+    // check spell 相关
+    "cSpell.diagnosticLevel": "Hint",
+    // prettier 相关
+    "prettier.trailingComma": "all",
+    "prettier.printWidth": 80,
+    "prettier.arrowParens": "avoid",
+}

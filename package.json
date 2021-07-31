@@ -1,0 +1,28 @@
+{
+  "name": "pb-thrift-web",
+  "version": "0.0.1",
+  "description": "pb thrift convertion web UI interface",
+  "main": "index.js",
+  "repository": "git@github.com:YYCoder/pb-thrift-web.git",
+  "author": "Markey <markeyme@163.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "next": "^11.0.1",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  },
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.15",
+    "eslint": "^7.32.0",
+    "eslint-config-next": "^11.0.1",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  }
+}
