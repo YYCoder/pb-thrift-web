@@ -1,18 +1,22 @@
-import chalk from "chalk";
-import cp from "child_process";
-import fs from "fs/promises";
-import id from "nanoid";
-import path from "path";
+import chalk from 'chalk';
+import cp from 'child_process';
+import fs from 'fs/promises';
+import id from 'nanoid';
+import path from 'path';
 
 export const config = {
     bodyParser: {
-        sizeLimit: "2mb",
-    },
+        sizeLimit: '2mb'
+    }
 };
 
+// 这里 eslint 检测有问题
+// eslint-disable-next-line no-unused-vars
 enum TaskType {
+    // eslint-disable-next-line no-unused-vars
     PROTO2THRIFT = 1,
-    THRIFT2PROTO = 2,
+    // eslint-disable-next-line no-unused-vars
+    THRIFT2PROTO = 2
 }
 
 type TaskOptions = {
@@ -22,21 +26,21 @@ type TaskOptions = {
     fieldCase: string;
     nameCase: string;
     syntax: number;
-}
+};
 
 const info = (...str: string[]) => {
-    const d = new Date;
+    const d = new Date();
     const time = `${d.toUTCString()}`;
     console.log(`${chalk.green(time)} [${uuid}]:`, ...str);
-}
+};
 const err = (...str: string[]) => {
-    const d = new Date;
+    const d = new Date();
     const time = `${d.toUTCString()}`;
     console.error(`${chalk.red(time)} [${uuid}]:`, ...str);
-}
+};
 
 // use a global variable directly, for log functions, as we don't need to worry about concurrency problem currently
-let uuid: string
+let uuid: string;
 
 export default async function handler(req, res) {
     uuid = id.nanoid(20);
@@ -48,7 +52,7 @@ export default async function handler(req, res) {
     if (!valid) {
         res.status(400).json({
             content: '',
-            errTips: reason,
+            errTips: reason
         });
         return;
     }
@@ -59,30 +63,40 @@ export default async function handler(req, res) {
         taskType = TaskType.PROTO2THRIFT,
         useSpaceIndent = false,
         indentSpace = 4,
-        fieldCase = "camelCase",
-        nameCase = "camelCase",
-        syntax = 3,
+        fieldCase = 'camelCase',
+        nameCase = 'camelCase',
+        syntax = 3
     } = req.body;
     const opt = {
-        taskType, useSpaceIndent, indentSpace, fieldCase, nameCase, syntax,
+        taskType,
+        useSpaceIndent,
+        indentSpace,
+        fieldCase,
+        nameCase,
+        syntax
     };
 
     // use temporary file to avoid shell command injection
     const timestamp = Date.now();
-    const inputExt = opt.taskType === TaskType.PROTO2THRIFT ? 'proto' : 'thrift';
-    const outputExt = opt.taskType === TaskType.PROTO2THRIFT ? 'thrift' : 'proto';
-    const tmpName = path.join(process.cwd(), `tmps/${timestamp}_tmp`)
+    const inputExt =
+        opt.taskType === TaskType.PROTO2THRIFT ? 'proto' : 'thrift';
+    const outputExt =
+        opt.taskType === TaskType.PROTO2THRIFT ? 'thrift' : 'proto';
+    const tmpName = path.join(process.cwd(), `tmps/${timestamp}_tmp`);
     const tempInput = `${tmpName}.${inputExt}`;
     const tempOutput = `${tmpName}.${outputExt}`;
-    let resContent: string
+    let resContent: string;
     try {
         await fs.writeFile(tempInput, content);
-        info(`successfully create file ${tempInput}, and write request content to it`);
+        info(
+            `successfully create file ${tempInput}, and write request content to it`
+        );
     } catch (error) {
-        const errTips = `failed to create file ${tempInput}: ${error.message}`
+        const errTips = `failed to create file ${tempInput}: ${error.message}`;
         err(errTips);
         res.status(500).json({
-            content: '', errTips,
+            content: '',
+            errTips
         });
         return;
     }
@@ -93,7 +107,7 @@ export default async function handler(req, res) {
     } catch (error) {
         res.status(500).json({
             content: '',
-            errTips: error.message,
+            errTips: error.message
         });
         return;
     }
@@ -110,41 +124,51 @@ export default async function handler(req, res) {
 
     res.status(200).json({
         content: resContent,
-        errTips: "",
+        errTips: ''
     });
 }
 
-async function doTransform(opt: TaskOptions, tempInput: string, tempOutput: string): Promise<string> {
-    let data: Buffer
+async function doTransform(
+    opt: TaskOptions,
+    tempInput: string,
+    tempOutput: string
+): Promise<string> {
+    let data: Buffer;
     const {
         taskType,
         useSpaceIndent,
         indentSpace,
         fieldCase,
         nameCase,
-        syntax,
+        syntax
     } = opt;
 
-    const task = taskType === TaskType.PROTO2THRIFT ? 'proto2thrift' : 'thrift2proto';
+    const task =
+        taskType === TaskType.PROTO2THRIFT ? 'proto2thrift' : 'thrift2proto';
     const outputPath = path.parse(tempOutput);
-    const command = `protobuf-thrift -t ${task} -syntax ${syntax} -use-space-indent ${useSpaceIndent ? 1 : 0} -indent-space ${indentSpace} -name-case ${nameCase} -field-case ${fieldCase} -i ${tempInput} -o ${outputPath.dir} -r 0`
+    const command = `protobuf-thrift -t ${task} -syntax ${syntax} -use-space-indent ${
+        useSpaceIndent ? 1 : 0
+    } -indent-space ${indentSpace} -name-case ${nameCase} -field-case ${fieldCase} -i ${tempInput} -o ${
+        outputPath.dir
+    } -r 0`;
 
     info(`start executing command ${command}`);
     try {
         cp.execSync(command);
-        info(`transform successfully`);
+        info('transform successfully');
     } catch (err) {
         throw new Error(`transform failed, error ${err}`);
     }
 
-    info(`execute command succeed, start read output from tmp output file ${tempOutput}`);
+    info(
+        `execute command succeed, start read output from tmp output file ${tempOutput}`
+    );
     try {
         data = await fs.readFile(tempOutput);
 
         return data.toString();
-
     } catch (error) {
-        const errTips = `failed to read file ${tempOutput}: ${error.message}`
+        const errTips = `failed to read file ${tempOutput}: ${error.message}`;
         err(errTips);
         throw new Error(errTips);
     }
@@ -153,37 +177,37 @@ async function doTransform(opt: TaskOptions, tempInput: string, tempOutput: stri
 function checkParams(req): { reason: string; valid: boolean } {
     let reason: string;
     const {
-        content = "",
+        content = '',
         taskType = TaskType.PROTO2THRIFT,
-        useSpaceIndent = false,
-        indentSpace = 4,
-        fieldCase = "camelCase",
-        nameCase = "camelCase",
-        syntax = 3,
+        // useSpaceIndent = false,
+        // indentSpace = 4,
+        // fieldCase = 'camelCase',
+        // nameCase = 'camelCase',
+        syntax = 3
     } = req.body;
 
-    if (req.method !== "POST") {
+    if (req.method !== 'POST') {
         reason = `invalid request method ${req.method}`;
         info(reason);
         return {
             reason,
-            valid: false,
+            valid: false
         };
     }
-    if (typeof content !== "string") {
+    if (typeof content !== 'string') {
         reason = `invalid request content type ${typeof req.body?.content}`;
         info(reason);
         return {
             reason,
-            valid: false,
+            valid: false
         };
     }
     if (content.length === 0) {
-        reason = `empty content`;
+        reason = 'empty content';
         info(reason);
         return {
             reason,
-            valid: false,
+            valid: false
         };
     }
     if (!(taskType in TaskType)) {
@@ -193,7 +217,7 @@ function checkParams(req): { reason: string; valid: boolean } {
         info(reason);
         return {
             reason,
-            valid: false,
+            valid: false
         };
     }
     if (syntax !== 2 && syntax !== 3) {
@@ -201,12 +225,12 @@ function checkParams(req): { reason: string; valid: boolean } {
         info(reason);
         return {
             reason,
-            valid: false,
+            valid: false
         };
     }
 
     return {
-        reason: "",
-        valid: true,
+        reason: '',
+        valid: true
     };
 }
