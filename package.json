@@ -1,38 +1,41 @@
 {
-  "name": "pb-thrift-web",
-  "version": "0.0.1",
-  "description": "pb thrift convertion web UI interface",
-  "main": "index.js",
-  "repository": "git@github.com:YYCoder/pb-thrift-web.git",
-  "author": "Markey <markeyme@163.com>",
-  "license": "MIT",
-  "private": true,
-  "dependencies": {
-    "@emotion/react": "^11.4.1",
-    "@rebass/forms": "^4.0.6",
-    "@rebass/preset": "^4.0.5",
-    "chalk": "^4.1.2",
-    "nanoid": "^3.1.23",
-    "next": "^11.0.1",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
-    "rebass": "^4.0.7"
-  },
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "devDependencies": {
-    "@types/react": "^17.0.15",
-    "@typescript-eslint/eslint-plugin": "^4.29.1",
-    "@typescript-eslint/parser": "^4.29.1",
-    "eslint": "^7.32.0",
-    "eslint-config-next": "^11.0.1",
-    "eslint-config-prettier": "^8.3.0",
-    "eslint-plugin-prettier": "^3.4.0",
-    "prettier": "^2.3.2",
-    "typescript": "^4.3.5"
-  }
+    "name": "pb-thrift-web",
+    "version": "0.0.1",
+    "description": "pb thrift convertion web UI interface",
+    "main": "index.js",
+    "repository": "git@github.com:YYCoder/pb-thrift-web.git",
+    "author": "Markey <markeyme@163.com>",
+    "license": "MIT",
+    "private": true,
+    "dependencies": {
+        "@emotion/react": "^11.4.1",
+        "@rebass/forms": "^4.0.6",
+        "@rebass/preset": "^4.0.5",
+        "chalk": "^4.1.2",
+        "cross-fetch": "^3.1.4",
+        "nanoid": "^3.1.23",
+        "next": "^11.0.1",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-toastify": "^7.0.4",
+        "rebass": "^4.0.7",
+        "emotion-theming": "^10.0.27"
+    },
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "devDependencies": {
+        "@types/react": "^17.0.15",
+        "@typescript-eslint/eslint-plugin": "^4.29.1",
+        "@typescript-eslint/parser": "^4.29.1",
+        "eslint": "^7.32.0",
+        "eslint-config-next": "^11.0.1",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-prettier": "^3.4.0",
+        "prettier": "^2.3.2",
+        "typescript": "^4.3.5"
+    }
 }

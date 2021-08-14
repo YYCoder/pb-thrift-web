@@ -3,29 +3,12 @@ import cp from 'child_process';
 import fs from 'fs/promises';
 import id from 'nanoid';
 import path from 'path';
+import { TaskOptions, TaskType } from '../../shared/types';
 
 export const config = {
     bodyParser: {
         sizeLimit: '2mb'
     }
-};
-
-// 这里 eslint 检测有问题
-// eslint-disable-next-line no-unused-vars
-enum TaskType {
-    // eslint-disable-next-line no-unused-vars
-    PROTO2THRIFT = 1,
-    // eslint-disable-next-line no-unused-vars
-    THRIFT2PROTO = 2
-}
-
-type TaskOptions = {
-    taskType: TaskType;
-    useSpaceIndent: boolean;
-    indentSpace: number;
-    fieldCase: string;
-    nameCase: string;
-    syntax: number;
 };
 
 const info = (...str: string[]) => {
@@ -98,6 +81,9 @@ export default async function handler(req, res) {
             content: '',
             errTips
         });
+        try {
+            await fs.unlink(tempInput);
+        } catch {}
         return;
     }
 
@@ -109,6 +95,11 @@ export default async function handler(req, res) {
             content: '',
             errTips: error.message
         });
+        // clear temp files
+        try {
+            await fs.unlink(tempInput);
+            await fs.unlink(tempOutput);
+        } catch {}
         return;
     }
 
