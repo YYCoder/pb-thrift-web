@@ -37,18 +37,11 @@ export function PageHeader(props: PageHeaderProps) {
     }, [pbSyntax, nameCase, fieldCase, useSpaceIndent, indentSpace]);
 
     return (
-        <Box py={3}>
+        <Box py={3} color="text">
             <Flex mx={2} mb={2}>
                 <Box width={1 / 2}>
-                    <Heading fontSize={[5, 6, 7]} color="primary">
-                        pb-thrift
-                    </Heading>
-                    <Text
-                        mt={2}
-                        fontSize={[3, 4, 5]}
-                        fontWeight="bold"
-                        color="primary"
-                    >
+                    <Heading fontSize={[5, 6, 7]}>pb-thrift</Heading>
+                    <Text mt={2} fontSize={[3, 4, 5]} fontWeight="bold">
                         protobuf idl to thrift, and vice versa.
                     </Text>
                     <Text mt={3} fontSize={[1, 2, 3]}>

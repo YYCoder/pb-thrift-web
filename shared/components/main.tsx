@@ -1,8 +1,10 @@
 import { Textarea } from '@rebass/forms';
+import { useTheme } from 'emotion-theming';
 import React from 'react';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Box, Button, Flex, Link } from 'rebass';
+import { Box, Button, Flex, Link, Text } from 'rebass';
+import { Swap } from '../components';
 import { TaskType } from '../types';
 
 export type PageMainProps = {
@@ -33,6 +35,7 @@ function selectText(id: string) {
 }
 
 export function PageMain(props: PageMainProps) {
+    const theme = useTheme() as any;
     const { onChange, raw, transformed, onSwap, taskType, isError } = props;
     const leftSide = taskType === TaskType.PROTO2THRIFT ? 'protobuf' : 'thrift';
     const rightSide =
@@ -48,13 +51,20 @@ export function PageMain(props: PageMainProps) {
                 await navigator.clipboard.writeText(transformed);
                 toast.success('copied to clipboard', {
                     style: {
-                        backgroundColor: '#000'
+                        backgroundColor: theme.colors.reverseBg,
+                        color: theme.colors.background
                     }
                 });
             } catch (e) {
                 console.error(e);
                 toast.error(
-                    'sorry, copy to clipboard failed, try to copy it yourself 😓'
+                    'sorry, copy to clipboard failed, try to copy it yourself 😓',
+                    {
+                        style: {
+                            backgroundColor: theme.colors.reverseBg,
+                            color: theme.colors.background
+                        }
+                    }
                 );
             }
         } else {
@@ -70,14 +80,13 @@ export function PageMain(props: PageMainProps) {
                         pl={3}
                         fontSize={[3, 4, 5]}
                         fontWeight="bold"
-                        color="primary"
+                        color="text"
                     >
                         {leftSide}
                     </Box>
                     <Box width={1 / 3}>
                         <Button
-                            color="white"
-                            bg="black"
+                            bg="reverseBg"
                             onClick={onSwap}
                             mr={2}
                             width={1 / 2}
@@ -86,20 +95,7 @@ export function PageMain(props: PageMainProps) {
                                 maxWidth: 200
                             }}
                         >
-                            <svg
-                                className="icon"
-                                viewBox="0 0 1024 1024"
-                                version="1.1"
-                                xmlns="http://www.w3.org/2000/svg"
-                                p-id="1188"
-                                width="20%"
-                            >
-                                <path
-                                    d="M273.664 341.333h579.67a42.667 42.667 0 0 1 0 85.334H170.666c-37.974 0-57.046-45.952-30.166-72.832l170.667-170.667a42.667 42.667 0 0 1 60.33 60.33l-97.834 97.835z m476.587 341.334H170.58a42.667 42.667 0 0 1 0-85.334h682.667c37.973 0 57.045 45.952 30.165 72.832L712.747 840.832a42.667 42.667 0 1 1-60.331-60.33l97.835-97.835z"
-                                    p-id="1189"
-                                    fill="#e6e6e6"
-                                ></path>
-                            </svg>
+                            <Swap />
                         </Button>
                     </Box>
                     <Box
@@ -107,7 +103,7 @@ export function PageMain(props: PageMainProps) {
                         pr={3}
                         fontSize={[3, 4, 5]}
                         fontWeight="bold"
-                        color="primary"
+                        color="text"
                     >
                         {rightSide}
                     </Box>
@@ -127,6 +123,7 @@ export function PageMain(props: PageMainProps) {
                                 resize: 'none'
                             }}
                             height={500}
+                            bg="gray"
                         />
                     </Box>
                     <Box width={1 / 2} px={2} py={2}>
@@ -139,6 +136,7 @@ export function PageMain(props: PageMainProps) {
                                 // 边框颜色应该应用主题变量
                                 border: '1px solid #000'
                             }}
+                            bg="gray"
                         >
                             <pre
                                 style={{
@@ -156,7 +154,7 @@ export function PageMain(props: PageMainProps) {
                     </Box>
                 </Flex>
             </Box>
-            <Box textAlign="center" mt={3}>
+            <Text textAlign="center" mt={3} color="text">
                 © 2021 Markey Github:
                 <Link
                     target="_blank"
@@ -165,7 +163,7 @@ export function PageMain(props: PageMainProps) {
                 >
                     protobuf-thrift
                 </Link>
-            </Box>
+            </Text>
         </Box>
     );
 }

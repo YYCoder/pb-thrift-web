@@ -67,7 +67,15 @@ function HomePage() {
     };
 
     return (
-        <Box>
+        <Box
+            sx={{
+                height: '100%',
+                transition: 'background .2s ease'
+            }}
+            px={2}
+            py={2}
+            bg="background"
+        >
             <PageHeader onChange={handleOptsChange} />
             <PageMain
                 raw={raw}

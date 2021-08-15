@@ -1,6 +1,10 @@
 body {
     height: 100vh;
     margin: 0px;
-    padding: 5px;
+    padding: 0;
     box-sizing: border-box;
+}
+
+#__next {
+    height: 100%;
 }

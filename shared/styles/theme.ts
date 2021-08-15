@@ -2,8 +2,14 @@ export const defaultTheme = {
     breakpoints: ['40em', '52em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
-        blue: '#07c',
-        primary: '#07c'
+        text: '#000',
+        background: '#fff',
+        reverseBg: '#000',
+        primary: '#000',
+        secondary: '#30c',
+        muted: '#f6f6f9',
+        gray: '#dddddf',
+        highlight: 'hsla(205, 100%, 40%, 0.125)'
     },
     space: [0, 4, 8, 16, 32, 64, 128, 256],
     fonts: {
@@ -19,6 +25,10 @@ export const defaultTheme = {
     lineHeights: {
         body: 1.5,
         heading: 1.25
+    },
+    radii: {
+        default: 4,
+        circle: 99999
     },
     shadows: {
         small: '0 0 4px rgba(0, 0, 0, .125)',
@@ -38,8 +48,14 @@ export const darkTheme = {
     breakpoints: ['40em', '52em', '64em'],
     fontSizes: [12, 14, 16, 20, 24, 32, 48, 64],
     colors: {
-        blue: '#07c',
-        primary: '#f6f6ff'
+        text: '#fff',
+        background: '#000',
+        reverseBg: '#fff',
+        primary: '#fff',
+        secondary: '#30c',
+        muted: '#f6f6f9',
+        gray: '#dddddf',
+        highlight: 'hsla(205, 100%, 40%, 0.125)'
     },
     space: [0, 4, 8, 16, 32, 64, 128, 256],
     fonts: {
@@ -55,6 +71,10 @@ export const darkTheme = {
     lineHeights: {
         body: 1.5,
         heading: 1.25
+    },
+    radii: {
+        default: 4,
+        circle: 99999
     },
     shadows: {
         small: '0 0 4px rgba(0, 0, 0, .125)',
