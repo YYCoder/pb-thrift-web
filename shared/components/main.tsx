@@ -122,7 +122,7 @@ export function PageMain(props: PageMainProps) {
                             css={{
                                 resize: 'none'
                             }}
-                            height={500}
+                            height={650}
                             bg="gray"
                         />
                     </Box>
@@ -131,7 +131,7 @@ export function PageMain(props: PageMainProps) {
                             px={2}
                             py={2}
                             fontSize={[1, 2, 2]}
-                            height={500}
+                            height={650}
                             sx={{
                                 // 边框颜色应该应用主题变量
                                 border: '1px solid #000'
