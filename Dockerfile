@@ -3,7 +3,7 @@ FROM golang:1.16 AS GoEnv
 RUN go install -v github.com/YYCoder/protobuf-thrift@latest
 
 # 初始化 node 运行时
-FROM node:14-buster-slim
+FROM node:16.6.2-bullseye-slim
 WORKDIR /root/app
 # ! NOTE: 这里为了让 docker build 能利用上缓存，一定要先 copy package.json 和 yarn.lock 再执行 yarn
 COPY ["package.json", "yarn.lock", "./"]
