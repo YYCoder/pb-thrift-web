@@ -44,6 +44,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
             <Head>
                 <title>protobuf-thrift</title>
                 <link rel="icon" type="image/png" href="/favicon.png" />
+                {/* SEO */}
                 <meta
                     name="description"
                     content="Protobuf idl to thrift, and vice versa."
@@ -53,12 +54,15 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                     name="keywords"
                     content="ast,protobuf,thrift,golang,go,protocol-buffer,code-generator"
                 />
+                <meta name="robots" content="index, follow" />
+                {/* Twitter && Facebook */}
                 <meta property="og:title" content="protobuf-thrift" />
                 <meta property="og:image" content="/favicon.png" />
                 <meta
                     property="og:description"
                     content="Protobuf idl to thrift, and vice versa."
                 />
+                {/* google search console */}
                 <meta
                     name="google-site-verification"
                     content="n1n6CePjdhKBaoHVSxMRX_0lFSmPot2P9_3hFp8tLp8"
