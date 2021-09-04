@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'rebass';
 import { ChangeOptions, PageHeader, PageMain } from '../shared/components';
+import { protobuf, thrift } from '../shared/consts/idl-example';
 import { TaskType } from '../shared/types';
 
 function HomePage() {
@@ -14,14 +15,30 @@ function HomePage() {
     const timerRef = useRef<any>(null);
     const handleOptsChange = (opts: ChangeOptions) => {
         optionRef.current = opts;
-        doTransform(raw);
+        if (raw) doTransform(raw);
+    };
+    const handleClickExample = () => {
+        let raw = '';
+        if (taskType === TaskType.PROTO2THRIFT) {
+            raw = protobuf;
+        } else {
+            raw = thrift;
+        }
+        setRaw(raw);
+        if (raw) doTransform(raw);
     };
     const handleValChange = (val: string) => {
-        setRaw(val);
         clearTimeout(timerRef.current);
-        timerRef.current = setTimeout(() => {
-            doTransform(val);
-        }, 300);
+        setRaw(val);
+
+        if (!val) {
+            setIsError(false);
+            setTransformed('');
+        } else {
+            timerRef.current = setTimeout(() => {
+                doTransform(val);
+            }, 300);
+        }
     };
     const handleSwap = () => {
         if (taskType === TaskType.PROTO2THRIFT) {
@@ -76,7 +93,10 @@ function HomePage() {
             py={2}
             bg="background"
         >
-            <PageHeader onChange={handleOptsChange} />
+            <PageHeader
+                onChange={handleOptsChange}
+                onClickExample={handleClickExample}
+            />
             <PageMain
                 raw={raw}
                 transformed={transformed}

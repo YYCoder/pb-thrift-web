@@ -34,7 +34,14 @@ export const defaultTheme = {
         small: '0 0 4px rgba(0, 0, 0, .125)',
         large: '0 0 24px rgba(0, 0, 0, .125)'
     },
-    variants: {},
+    variants: {
+        shadow: {
+            textShadow: `4px 4px 0 rgba(0, 0, 0, .8),
+                8px 8px 0 rgba(0, 0, 0, .6),
+                16px 16px 0 rgba(0, 0, 0, .2),
+                20px 20px 0 rgba(0, 0, 0, .05);`
+        }
+    },
     text: {},
     buttons: {
         primary: {
@@ -80,7 +87,14 @@ export const darkTheme = {
         small: '0 0 4px rgba(0, 0, 0, .125)',
         large: '0 0 24px rgba(0, 0, 0, .125)'
     },
-    variants: {},
+    variants: {
+        shadow: {
+            textShadow: `4px 4px 0 rgba(255, 255, 255, .8),
+                8px 8px 0 rgba(255, 255, 255, .5),
+                16px 16px 0 rgba(255, 255, 255, .2),
+                20px 20px 0 rgba(255, 255, 255, .05);`
+        }
+    },
     text: {},
     buttons: {
         primary: {

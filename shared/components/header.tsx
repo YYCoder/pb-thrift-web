@@ -1,6 +1,6 @@
 import { Checkbox, Input, Label, Select } from '@rebass/forms';
 import React, { useEffect, useState } from 'react';
-import { Box, Flex, Heading, Link, Text } from 'rebass';
+import { Box, Button, Flex, Heading, Link, Text } from 'rebass';
 
 export type ChangeOptions = {
     pbSyntax: number;
@@ -11,10 +11,11 @@ export type ChangeOptions = {
 };
 export type PageHeaderProps = {
     onChange: (_params: ChangeOptions) => void;
+    onClickExample: () => void;
 };
 
 export function PageHeader(props: PageHeaderProps) {
-    const { onChange } = props;
+    const { onChange, onClickExample } = props;
     const [pbSyntax, setPbSyntax] = useState<ChangeOptions['pbSyntax']>(2);
     const [nameCase, setNameCase] =
         useState<ChangeOptions['nameCase']>('camelCase');
@@ -39,10 +40,12 @@ export function PageHeader(props: PageHeaderProps) {
     return (
         <Box py={3} color="text">
             <Flex mx={2} mb={2}>
-                <Box width={1 / 2}>
-                    <Heading fontSize={[5, 6, 7]}>pb-thrift</Heading>
+                <Box width={1 / 2} pr={6}>
+                    <Heading fontSize={[5, 6, 7]}>
+                        <Box variant="shadow">pb-thrift</Box>
+                    </Heading>
                     <Text mt={2} fontSize={[3, 4, 5]} fontWeight="bold">
-                        protobuf idl to thrift, and vice versa.
+                        Protobuf idl to thrift, and vice versa.
                     </Text>
                     <Text mt={3} fontSize={[1, 2, 3]}>
                         This tool makes protobuf and thrift transform to each
@@ -56,6 +59,16 @@ export function PageHeader(props: PageHeaderProps) {
                             github
                         </Link>
                         .
+                        <Button
+                            ml={3}
+                            onClick={onClickExample}
+                            css={{
+                                cursor: 'pointer'
+                            }}
+                            color="background"
+                        >
+                            example
+                        </Button>
                     </Text>
                     <Flex mt={4}>
                         <Box>

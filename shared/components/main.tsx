@@ -71,6 +71,14 @@ export function PageMain(props: PageMainProps) {
         }
     };
 
+    const timer = React.useRef<any>(null);
+    const debouncedClick = () => {
+        clearTimeout(timer.current);
+        timer.current = setTimeout(() => {
+            handleClick();
+        }, 300);
+    };
+
     return (
         <Box>
             <Box>
@@ -120,7 +128,8 @@ export function PageMain(props: PageMainProps) {
                             placeholder="paste your original idl here"
                             fontSize={[1, 2, 2]}
                             css={{
-                                resize: 'none'
+                                resize: 'none',
+                                borderRadius: 0
                             }}
                             height={650}
                             bg="gray"
@@ -146,7 +155,7 @@ export function PageMain(props: PageMainProps) {
                                     overflowY: 'scroll',
                                     height: '100%'
                                 }}
-                                onClick={handleClick}
+                                onClick={debouncedClick}
                             >
                                 <code id="transformed">{rightContent}</code>
                             </pre>
@@ -158,7 +167,7 @@ export function PageMain(props: PageMainProps) {
                 © 2021 Markey Github:
                 <Link
                     target="_blank"
-                    rel="noopener"
+                    rel="noopener noreferer"
                     href="https://github.com/YYCoder/protobuf-thrift"
                 >
                     protobuf-thrift
