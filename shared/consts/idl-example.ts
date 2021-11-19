@@ -1,11 +1,12 @@
 export const thrift = `namespace go test.test.test
 namespace py test.test.test
 
+# 123123
 enum Status {
     StatusUnknown = 0
     StatusUnreviewed = 1
     StatusOnline = 2
-    StatusRejected = 3
+    StatusRejected = 3 // 123123
     StatusOffline = 4
 }
 enum OtherEnum {
@@ -15,6 +16,7 @@ enum OtherEnum {
     Rejected = 3
     Offline = 4
 }
+/* asdasd */
 struct RespOfTestGetApi {
     1: i32 Code
     2: string Message
