@@ -86,7 +86,7 @@ function HomePage() {
     return (
         <Box
             sx={{
-                height: '100%',
+                minHeight: '100vh',
                 transition: 'background .2s ease'
             }}
             px={2}
