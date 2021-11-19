@@ -38,7 +38,7 @@ struct Config {
     6: map<i64,string> FailMap
     7: double Fl
     8: double Db
-    9: binary Bs
+    // 9: binary Bs
     10: TimeRange Nested
     11: list<TimeRange> NestedTypeList
     12: map<string,TimeRange> NestedTypeMap
@@ -86,7 +86,7 @@ message Config {
     map<int64, string> fail_map = 6;
     float fl = 7;
     double db = 8;
-    bytes bs = 9;
+    // bytes bs = 9;
     TimeRange nested = 10;
     repeated TimeRange nested_type_list = 11;
     map<string, TimeRange> nested_type_map = 12;
