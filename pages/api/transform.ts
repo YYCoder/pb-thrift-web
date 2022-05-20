@@ -3,7 +3,7 @@ import cp from 'child_process';
 import fs from 'fs/promises';
 import id from 'nanoid';
 import path from 'path';
-import { TaskOptions, TaskType } from '../../shared/types';
+import { CaseType, TaskOptions, TaskType } from '../../shared/types';
 
 export const config = {
     bodyParser: {
@@ -139,7 +139,7 @@ async function doTransform(
     const outputPath = path.parse(tempOutput);
     const command = `protobuf-thrift -t ${task} -syntax ${syntax} -use-space-indent ${
         useSpaceIndent ? 1 : 0
-    } -indent-space ${indentSpace} -name-case ${nameCase} -field-case ${fieldCase} -i ${tempInput} -o ${
+    } -indent-space ${+indentSpace} -name-case ${nameCase} -field-case ${fieldCase} -i ${tempInput} -o ${
         outputPath.dir
     } -r 0`;
 
@@ -172,8 +172,8 @@ function checkParams(req): { reason: string; valid: boolean } {
         taskType = TaskType.PROTO2THRIFT,
         // useSpaceIndent = false,
         // indentSpace = 4,
-        // fieldCase = 'camelCase',
-        // nameCase = 'camelCase',
+        fieldCase = 'camelCase',
+        nameCase = 'camelCase',
         syntax = 3
     } = req.body;
 
@@ -213,6 +213,14 @@ function checkParams(req): { reason: string; valid: boolean } {
     }
     if (syntax !== 2 && syntax !== 3) {
         reason = `invalid protobuf syntax ${syntax}, must be intiger 2 or 3`;
+        info(reason);
+        return {
+            reason,
+            valid: false
+        };
+    }
+    if (!CaseType.has(nameCase) || !CaseType.has(fieldCase)) {
+        reason = `invalid nameCase or fieldCase, must be one of ${CaseType.values()}`;
         info(reason);
         return {
             reason,

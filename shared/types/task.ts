@@ -5,6 +5,8 @@ export enum TaskType {
     THRIFT2PROTO = 2
 }
 
+export const CaseType = new Set(['camelCase', 'snakeCase', 'kababCase', 'pascalCase', 'screamingSnakeCase'])
+
 export type TaskOptions = {
     taskType: TaskType;
     useSpaceIndent: boolean;
