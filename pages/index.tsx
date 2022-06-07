@@ -1,10 +1,10 @@
 import fetch from 'cross-fetch';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Box } from 'rebass';
 import { ChangeOptions, PageHeader, PageMain } from '../shared/components';
 import { protobuf, thrift } from '../shared/consts/idl-example';
-import { TaskType } from '../shared/types';
+import { Task, TaskType } from '../shared/types';
 
 function HomePage() {
     const [taskType, setTaskType] = useState<TaskType>(TaskType.PROTO2THRIFT);
@@ -13,9 +13,31 @@ function HomePage() {
     const [transformed, setTransformed] = useState<string>('');
     const optionRef = useRef<ChangeOptions>(null);
     const timerRef = useRef<any>(null);
+    const wasmRef = useRef<any>(null);
+
+    useEffect(() => {
+        initWASM();
+    }, []);
+
+    const initWASM = async (retryCount: number = 0) => {
+        if (retryCount >= 3 || wasmRef.current) return;
+        try {
+            const go = new Go(); // Defined in wasm_exec.js
+            const WASM_URL = '/pb-thrift.wasm';
+            const resp = await fetch(WASM_URL);
+            const bytes = await resp.arrayBuffer();
+            const wasm = await WebAssembly.instantiate(bytes, go.importObject);
+            go.run(wasm.instance);
+        } catch (e) {
+            console.error('Instantiate wasm failed, error:', e);
+            setTimeout(() => {
+                initWASM(retryCount + 1);
+            }, 1000);
+        }
+    };
     const handleOptsChange = (opts: ChangeOptions) => {
         optionRef.current = opts;
-        if (raw) doTransform(raw);
+        if (raw) transform(raw);
     };
     const handleClickExample = () => {
         let raw = '';
@@ -25,7 +47,7 @@ function HomePage() {
             raw = thrift;
         }
         setRaw(raw);
-        if (raw) doTransform(raw);
+        if (raw) transform(raw);
     };
     const handleValChange = (val: string) => {
         clearTimeout(timerRef.current);
@@ -36,7 +58,7 @@ function HomePage() {
             setTransformed('');
         } else {
             timerRef.current = setTimeout(() => {
-                doTransform(val);
+                transform(val);
             }, 300);
         }
     };
@@ -47,7 +69,44 @@ function HomePage() {
             setTaskType(TaskType.PROTO2THRIFT);
         }
     };
-    const doTransform = async (val: string) => {
+    const transform = async (content: string) => {
+        const { pbSyntax, nameCase, fieldCase, useSpaceIndent, indentSpace } =
+            optionRef.current ?? {};
+        // use the WASM to transform first, if not present, use API
+        if (!window.transform) {
+            doTransformByAPI(content);
+            return;
+        }
+
+        let task = Task.PROTO2THRIFT;
+        if (taskType === TaskType.THRIFT2PROTO) {
+            task = Task.THRIFT2PROTO;
+        }
+        try {
+            const { msg, res } = window.transform({
+                rawContent: content,
+                useSpaceIndent: useSpaceIndent,
+                indentSpace: `${indentSpace}`,
+                fieldCase: fieldCase,
+                nameCase: nameCase,
+                task: task,
+                syntax: pbSyntax
+            });
+            console.log(`err msg: ${msg}, res: ${res}`);
+            if (msg) {
+                setTransformed(msg);
+                setIsError(true);
+                return;
+            }
+            setTransformed(res);
+            setIsError(false);
+        } catch (e) {
+            console.error(e);
+            setTransformed(`error occured, ${e}`);
+            setIsError(true);
+        }
+    };
+    const doTransformByAPI = async (val: string) => {
         const { pbSyntax, nameCase, fieldCase, useSpaceIndent, indentSpace } =
             optionRef.current ?? {};
         try {

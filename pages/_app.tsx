@@ -81,6 +81,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
                         gtag('config', 'G-EJN8HB5S26');`
                     }}
                 />
+                <script async src="/wasm_exec.min.js" />
             </Head>
             <Flex
                 onClick={handleChangeTheme}
