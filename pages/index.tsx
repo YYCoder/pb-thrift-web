@@ -83,7 +83,7 @@ function HomePage() {
             task = Task.THRIFT2PROTO;
         }
         try {
-            const { msg, res } = window.transform({
+            const result = window.transform({
                 rawContent: content,
                 useSpaceIndent: useSpaceIndent,
                 indentSpace: `${indentSpace}`,
@@ -92,7 +92,14 @@ function HomePage() {
                 task: task,
                 syntax: pbSyntax
             });
-            console.log(`err msg: ${msg}, res: ${res}`);
+
+            console.log(result);
+
+            if (!result) {
+                throw new Error('WASM panic, try API to get error msg');
+            }
+            const { msg, res } = result;
+
             if (msg) {
                 setTransformed(msg);
                 setIsError(true);
@@ -102,8 +109,8 @@ function HomePage() {
             setIsError(false);
         } catch (e) {
             console.error(e);
-            setTransformed(`error occured, ${e}`);
-            setIsError(true);
+            // use API as a fallback
+            doTransformByAPI(content);
         }
     };
     const doTransformByAPI = async (val: string) => {
