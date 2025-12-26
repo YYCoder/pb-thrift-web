@@ -1,6 +1,17 @@
 # 安装最新版 protobuf-thrift
 FROM golang:1.16 AS goenv
-RUN go install -v github.com/YYCoder/protobuf-thrift@latest
+# Install git for cloning
+RUN apt-get update && apt-get install -y git && rm -rf /var/lib/apt/lists/*
+# Configure Go to use direct mode to bypass proxy issues
+ENV GOPROXY=direct
+# Build from source since main package is in a subdirectory
+RUN git clone --depth 1 https://github.com/YYCoder/protobuf-thrift.git /tmp/protobuf-thrift && \
+    cd /tmp/protobuf-thrift && \
+    (test -f ./cmd/protobuf-thrift/main.go && go build -o /go/bin/protobuf-thrift ./cmd/protobuf-thrift) || \
+    (test -f ./cmd/main.go && go build -o /go/bin/protobuf-thrift ./cmd) || \
+    (test -f ./main.go && go build -o /go/bin/protobuf-thrift .) || \
+    (find . -name "main.go" -type f | head -1 | xargs dirname | xargs -I {} sh -c 'go build -o /go/bin/protobuf-thrift ./{}') && \
+    rm -rf /tmp/protobuf-thrift
 
 # 初始化 node 运行时
 FROM node:22.12.0-bullseye-slim
