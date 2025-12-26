@@ -51,8 +51,8 @@
     "typescript.updateImportsOnFileMove.enabled": "always", // 默认就是 always
     // 保存时的行为
     "editor.codeActionsOnSave": {
-        "source.fixAll.eslint": true, // 针对 eslint 的结果自动修复，eslint 不会自动修复的
-        "source.organizeImports": true, // 对 ts 自动格式化 import，删除无用的 import、合并相同模块的 import
+        "source.fixAll.eslint": "explicit",
+        "source.organizeImports": "explicit"
     },
     // 内置特定语言配置
     "[json]": {
